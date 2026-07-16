@@ -6,13 +6,13 @@
     <title>意志棋盘 - 🍉西瓜籽逻辑版</title>
     <style>
         :root {
-            --primary: #ff4757;
-            --primary-hover: #ff6b81;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1c1917 100%);
-            --glass-bg: rgba(30, 41, 59, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --bg-gradient: #000000;
+            --glass-bg: rgba(0, 20, 10, 0.75);
+            --glass-border: rgba(16, 185, 129, 0.2);
+            --text-main: #ecfdf5;
+            --text-muted: #6ee7b7;
         }
 
         * {
@@ -23,7 +23,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #0f172a;
+            background: #000000;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -32,6 +32,7 @@
             padding: 20px 10px;
             overflow-x: hidden;
             position: relative;
+            zoom: 0.85;
         }
 
         /* 背景发光微粒 - 西瓜风配色 */
@@ -55,14 +56,14 @@
         .circle-1 {
             width: 40vw;
             height: 40vw;
-            background: #10b981; /* 翡翠绿 */
+            background: #064e3b;
             top: -10%;
             left: -10%;
         }
         .circle-2 {
             width: 45vw;
             height: 45vw;
-            background: #ff4757; /* 西瓜红 */
+            background: #065f46;
             bottom: -10%;
             right: -10%;
             animation-delay: -5s;
@@ -72,26 +73,13 @@
             100% { transform: translate(6%, 6%) scale(1.15); }
         }
 
-        /* 磨砂玻璃主面板 */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 24px;
-            width: 100%;
-            max-width: 460px;
-            margin-bottom: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            text-align: center;
-        }
+
 
         h1 {
             font-size: 26px;
             font-weight: 800;
             margin-bottom: 6px;
-            background: linear-gradient(to right, #10b981, #ff4757);
+            background: linear-gradient(to right, #34d399, #10b981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
@@ -116,7 +104,7 @@
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #ff6b81;
+            color: #34d399;
             margin-bottom: 8px;
             font-weight: 700;
         }
@@ -139,8 +127,8 @@
 
         .row {
             min-height: 96px;
-            background: rgba(15, 23, 42, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 20, 10, 0.45);
+            border: 1px solid rgba(16, 185, 129, 0.1);
             border-radius: 18px;
             padding: 8px 16px;
             display: flex;
@@ -280,7 +268,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .rules-card strong {
-            color: #ff4757;
+            color: #10b981;
         }
     </style>
 </head>
@@ -290,24 +278,7 @@
         <div class="circle circle-2"></div>
     </div>
 
-    <div class="glass-panel">
-        <h1>意志棋盘</h1>
-        <p class="subtitle">调整西瓜棋子位置，使每行点数（西瓜子）从大到小排列符合目标</p>
-        
-        <div class="target-box">
-            <div class="target-title">🎯 目标意志 (从大到小)</div>
-            <div id="target-display">生成中...</div>
-        </div>
-
-        <div class="rules-card">
-            <strong>核心规则：</strong><br>
-            1. 初始 6 行各有唯一一个西瓜骰子（西瓜子点数为 1-6 不重复）。<br>
-            2. 点击 <strong>▲</strong> 往上移一行，西瓜子 <strong>增加 1 颗</strong>（6 颗之后再往上循环变回 1 颗）。<br>
-            3. 点击 <strong>▼</strong> 往下移一行，西瓜子 <strong>减少 1 颗</strong>（1 颗之后再往下循环变回 6 颗）。<br>
-            4. 调整完后，使每行有且仅有 1 个西瓜，且其<b>西瓜子数从大到小排列</b>后与顶部的“目标意志”完全一致即可通关！
-        </div>
-    </div>
-
+    <div id="target-display" style="font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #10b981; text-shadow: 0 0 15px rgba(16, 185, 129, 0.4); margin: 10px 0 20px 0;">生成中...</div>
     <div id="game-board" class="board-container"></div>
 
     <div class="action-buttons">
