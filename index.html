@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>意志棋盘 - 逻辑解谜游戏</title>
+    <title>意志棋盘 - 🍉西瓜籽逻辑版</title>
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --primary: #ff4757;
+            --primary-hover: #ff6b81;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1c1917 100%);
             --glass-bg: rgba(30, 41, 59, 0.75);
             --glass-border: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
@@ -34,7 +34,7 @@
             position: relative;
         }
 
-        /* 炫酷的背景发光微粒 */
+        /* 背景发光微粒 - 西瓜风配色 */
         .bg-glow {
             position: fixed;
             top: 0;
@@ -48,7 +48,7 @@
         .circle {
             position: absolute;
             border-radius: 50%;
-            opacity: 0.35;
+            opacity: 0.25;
             filter: blur(100px);
             animation: float 20s infinite ease-in-out alternate;
         }
@@ -62,7 +62,7 @@
         .circle-2 {
             width: 45vw;
             height: 45vw;
-            background: #8b5cf6; /* 罗兰紫 */
+            background: #ff4757; /* 西瓜红 */
             bottom: -10%;
             right: -10%;
             animation-delay: -5s;
@@ -91,7 +91,7 @@
             font-size: 26px;
             font-weight: 800;
             margin-bottom: 6px;
-            background: linear-gradient(to right, #34d399, #a78bfa);
+            background: linear-gradient(to right, #10b981, #ff4757);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
@@ -116,7 +116,7 @@
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #a78bfa;
+            color: #ff6b81;
             margin-bottom: 8px;
             font-weight: 700;
         }
@@ -124,8 +124,8 @@
             font-size: 28px;
             font-weight: 800;
             letter-spacing: 3px;
-            color: #34d399;
-            text-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+            color: #10b981;
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
 
         /* 棋盘主容器 */
@@ -138,11 +138,11 @@
         }
 
         .row {
-            min-height: 84px;
+            min-height: 96px;
             background: rgba(15, 23, 42, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 18px;
-            padding: 12px 16px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
             gap: 16px;
@@ -172,22 +172,22 @@
             align-items: center;
         }
 
-        /* 棋子卡片 */
+        /* 西瓜棋子卡片 */
         .dice {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 6px 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 4px 8px;
             border-radius: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             transition: transform 0.2s, border-color 0.2s;
         }
         .dice:hover {
             transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
         @keyframes popIn {
@@ -195,13 +195,11 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .dice-val {
-            font-size: 22px;
-            font-weight: 800;
-            color: #f8fafc;
-            width: 24px;
-            text-align: center;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        /* 限制西瓜 SVG 在棋盘中的大小 */
+        .watermelon-dice-svg {
+            width: 64px;
+            height: 64px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
         }
 
         .controls {
@@ -228,7 +226,7 @@
         .btn-ctrl:hover {
             background: var(--primary);
             color: white;
-            box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 8px rgba(255, 71, 87, 0.6);
         }
         .btn-ctrl:active {
             transform: scale(0.9);
@@ -264,7 +262,7 @@
         .btn-new {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 14px rgba(255, 71, 87, 0.4);
         }
         .btn-new:hover {
             background: var(--primary-hover);
@@ -282,7 +280,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .rules-card strong {
-            color: #34d399;
+            color: #ff4757;
         }
     </style>
 </head>
@@ -294,7 +292,7 @@
 
     <div class="glass-panel">
         <h1>意志棋盘</h1>
-        <p class="subtitle">调整棋子位置，达成顶部的目标顺序意志</p>
+        <p class="subtitle">调整西瓜棋子位置，使每行点数（西瓜子）从大到小排列符合目标</p>
         
         <div class="target-box">
             <div class="target-title">🎯 目标意志 (从大到小)</div>
@@ -303,10 +301,10 @@
 
         <div class="rules-card">
             <strong>核心规则：</strong><br>
-            1. 初始 6 行各有唯一一个不重复的棋子（数值为随机的 1-6）。<br>
-            2. 点击 <strong>▲</strong> 往上移一行，数值 <strong>加 1</strong>（数值从 6 再往上循环变回 1）。<br>
-            3. 点击 <strong>▼</strong> 往下移一行，数值 <strong>减 1</strong>（数值从 1 再往下循环变回 6）。<br>
-            4. 目标意志是由后台模拟不重合挪动后产生的<b>从大到小排列数值</b>。使每行最终有且仅有 1 个棋子，且其数值从大到小排列后与“目标意志”完全一致即算通关！
+            1. 初始 6 行各有唯一一个西瓜骰子（西瓜子点数为 1-6 不重复）。<br>
+            2. 点击 <strong>▲</strong> 往上移一行，西瓜子 <strong>增加 1 颗</strong>（6 颗之后再往上循环变回 1 颗）。<br>
+            3. 点击 <strong>▼</strong> 往下移一行，西瓜子 <strong>减少 1 颗</strong>（1 颗之后再往下循环变回 6 颗）。<br>
+            4. 调整完后，使每行有且仅有 1 个西瓜，且其<b>西瓜子数从大到小排列</b>后与顶部的“目标意志”完全一致即可通关！
         </div>
     </div>
 
@@ -318,71 +316,137 @@
     </div>
 
     <script>
+        // 定义西瓜籽的坐标排版（源自西瓜骰子）
+        const seedLayouts = {
+            1: [{ x: 100, y: 115, scale: 1.6, rotate: 0 }],
+            2: [
+                { x: 100, y: 85, scale: 1.3, rotate: 5 },
+                { x: 100, y: 145, scale: 1.3, rotate: -5 }
+            ],
+            3: [
+                { x: 100, y: 75, scale: 1.3, rotate: 0 },
+                { x: 75, y: 135, scale: 1.3, rotate: -20 },
+                { x: 125, y: 135, scale: 1.3, rotate: 20 }
+            ],
+            4: [
+                { x: 88, y: 90, scale: 1.2, rotate: -10 },
+                { x: 112, y: 90, scale: 1.2, rotate: 10 },
+                { x: 72, y: 140, scale: 1.2, rotate: -20 },
+                { x: 128, y: 140, scale: 1.2, rotate: 20 }
+            ],
+            5: [
+                { x: 100, y: 115, scale: 1.1, rotate: 0 },
+                { x: 85, y: 80, scale: 1.1, rotate: -15 },
+                { x: 115, y: 80, scale: 1.1, rotate: 15 },
+                { x: 70, y: 145, scale: 1.1, rotate: -30 },
+                { x: 130, y: 145, scale: 1.1, rotate: 30 }
+            ],
+            6: [
+                { x: 100, y: 75, scale: 1.0, rotate: 0 },
+                { x: 85, y: 105, scale: 1.0, rotate: -10 },
+                { x: 115, y: 105, scale: 1.0, rotate: 10 },
+                { x: 70, y: 140, scale: 1.0, rotate: -20 },
+                { x: 100, y: 145, scale: 1.0, rotate: 0 },
+                { x: 130, y: 140, scale: 1.0, rotate: 20 }
+            ]
+        };
+
+        // 动态生成西瓜切片 SVG 代码的函数
+        function generateWatermelonSvg(score, uniqueId) {
+            const layout = seedLayouts[score] || [];
+            let seedsMarkup = '';
+            
+            layout.forEach(seed => {
+                seedsMarkup += `<use href="#singleSeed-${uniqueId}" transform="translate(${seed.x}, ${seed.y}) scale(${seed.scale}) rotate(${seed.rotate})" />`;
+            });
+
+            return `
+                <svg class="watermelon-dice-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="fleshGrad-${uniqueId}" cx="50%" cy="55%" r="60%">
+                            <stop offset="0%" stop-color="#ff2a55" />
+                            <stop offset="65%" stop-color="#ff3f66" />
+                            <stop offset="88%" stop-color="#ff6b8b" />
+                            <stop offset="100%" stop-color="#ffa6b4" />
+                        </radialGradient>
+
+                        <linearGradient id="rindGrad-${uniqueId}" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#99e563" />
+                            <stop offset="100%" stop-color="#1e6b30" />
+                        </linearGradient>
+
+                        <g id="singleSeed-${uniqueId}">
+                            <path d="M 0,-7 C -5,-2.5 -5.5,5 0,8 C 5.5,5 5,-2.5 0,-7 Z" fill="#111" />
+                            <ellipse cx="-1.5" cy="-2" rx="1" ry="2.5" fill="#ffffff" opacity="0.3" transform="rotate(-20)" />
+                        </g>
+                    </defs>
+
+                    <path d="M 100,20 Q 103,17 106,20 L 178,145 Q 100,186 22,145 Z" 
+                          fill="url(#rindGrad-${uniqueId})" stroke="#164d23" stroke-width="1" stroke-linejoin="round" />
+
+                    <path d="M 100,25 L 173,142 Q 100,181 27,142 Z" fill="#e6ffc7" />
+
+                    <path d="M 100,31 L 167,137 Q 100,175 33,137 Z" fill="url(#fleshGrad-${uniqueId})" />
+                    <path d="M 100,31 L 115,55 Q 100,50 85,55 Z" fill="#ffffff" opacity="0.08" />
+
+                    <g>${seedsMarkup}</g>
+                </svg>
+            `;
+        }
+
         let rows = [[], [], [], [], [], []]; 
         let initialRows = []; 
         let targetVals = [];
+        let globalSeedId = 0; // 产生不重复的定义 ID 避免 SVG 渐变冲突
 
         function initLevel() {
-            // 1. 系统首先自动生成 1 到 6 的不重复随机数
             let base = [1, 2, 3, 4, 5, 6].sort(() => Math.random() - 0.5);
             
-            // 2. 分别布置在六行（每行初始只有唯一一个数字）
             rows = [[], [], [], [], [], []];
             base.forEach((v, idx) => {
-                rows[idx].push({ val: v });
+                globalSeedId++;
+                rows[idx].push({ val: v, id: globalSeedId });
             });
             
-            // 备份当前关卡的初始排列，供重置功能使用
             initialRows = JSON.parse(JSON.stringify(rows));
 
-            // 3. 后台进行多步骤完全不重合的模拟移动，用于产生目标序列
-            // 随机生成去向行，并强制所有棋子必须产生行位移（错排算法思想），增加后台挪动强度
+            // 错排算法生成模拟路径
             let destIndices = [0, 1, 2, 3, 4, 5];
             do {
                 destIndices.sort(() => Math.random() - 0.5);
             } while (destIndices.some((v, i) => v === i));
             
             let shuffledVals = [];
-
             for (let i = 0; i < 6; i++) {
-                let v_i = base[i];         // 初始第 i 行对应的数值 (i 为 0-5)
-                let j = destIndices[i];    // 挪动到目标行 j (j 为 0-5)
-                
-                // 向上移 (j < i) 移动距离为 i - j，数值增加 i - j
-                // 向下移 (j > i) 移动距离为 j - i，数值减少 j - i
-                // 统一模 6 计算公式：
+                let v_i = base[i];
+                let j = destIndices[i];
                 let newVal = ((v_i - 1 + (i - j)) % 6 + 6) % 6 + 1;
                 shuffledVals.push(newVal);
             }
 
-            // 4. 将这 6 个后台多步挪动完的数字，从大到小排列呈现到公屏上
             targetVals = [...shuffledVals].sort((a, b) => b - a);
             document.getElementById('target-display').innerText = targetVals.join(" - ");
 
             render();
         }
 
-        // 重置当前关卡到初始分配状态
         function resetLevel() {
             rows = JSON.parse(JSON.stringify(initialRows));
             render();
         }
 
-        // 核心移动与逻辑
+        // 移动逻辑
         function move(rIdx, dIdx, dir) {
             let nextR = rIdx + dir;
             if (nextR >= 0 && nextR < 6) {
-                // 取出被移动的棋子
                 let die = rows[rIdx].splice(dIdx, 1)[0];
                 
-                // 向上挪（dir === -1）加 1，向下挪（dir === 1）减 1
                 if (dir === -1) {
                     die.val = (die.val % 6) + 1;
                 } else {
                     die.val = ((die.val - 2 + 6) % 6) + 1;
                 }
                 
-                // 放入新行
                 rows[nextR].push(die);
                 render();
                 checkWin();
@@ -408,8 +472,11 @@
                 rowDice.forEach((d, dIdx) => {
                     const diceEl = document.createElement('div');
                     diceEl.className = 'dice';
+                    
+                    // 用生成的西瓜 SVG 替换原本的纯数字展示
+                    const watermelonSvg = generateWatermelonSvg(d.val, d.id);
                     diceEl.innerHTML = `
-                        <span class="dice-val">${d.val}</span>
+                        ${watermelonSvg}
                         <div class="controls">
                             <button class="btn-ctrl" onclick="move(${rIdx}, ${dIdx}, -1)">▲</button>
                             <button class="btn-ctrl" onclick="move(${rIdx}, ${dIdx}, 1)">▼</button>
@@ -423,25 +490,21 @@
             });
         }
 
-        // 通关判定逻辑
+        // 判断是否胜利
         function checkWin() {
-            // 1. 每行只能是唯一一个数字
             let isAllSingle = rows.every(r => r.length === 1);
             if (isAllSingle) {
-                // 2. 将玩家调整出来的这 6 个值从大到小排列
                 let currentVals = rows.map(r => r[0].val).sort((a, b) => b - a);
-                // 3. 逐一比对目标意志
                 let isWin = currentVals.every((v, i) => v === targetVals[i]);
                 if (isWin) {
                     setTimeout(() => {
-                        alert("🎉 意志达成！恭喜顺利通关！即将进入下一关。");
+                        alert("🍉 意志达成！西瓜子排列完美契合！即将进入下一关。");
                         initLevel();
                     }, 150);
                 }
             }
         }
 
-        // 初始运行
         initLevel();
     </script>
 </body>
