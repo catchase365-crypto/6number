@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>意志棋盘 - 逻辑解谜游戏</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 炫酷的背景发光微粒 */
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--bg-gradient);
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.35;
+            filter: blur(100px);
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .circle-1 {
+            width: 40vw;
+            height: 40vw;
+            background: #10b981; /* 翡翠绿 */
+            top: -10%;
+            left: -10%;
+        }
+        .circle-2 {
+            width: 45vw;
+            height: 45vw;
+            background: #8b5cf6; /* 罗兰紫 */
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(6%, 6%) scale(1.15); }
+        }
+
+        /* 磨砂玻璃主面板 */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 460px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(to right, #34d399, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* 目标意志显示区 */
+        .target-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .target-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #a78bfa;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        #target-display {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #34d399;
+            text-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+        }
+
+        /* 棋盘主容器 */
+        .board-container {
+            width: 100%;
+            max-width: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .row {
+            min-height: 84px;
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.25s ease;
+        }
+        .row:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .row-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-muted);
+            width: 44px;
+            text-align: center;
+            user-select: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding-right: 10px;
+        }
+
+        .dice-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            flex-grow: 1;
+            align-items: center;
+        }
+
+        /* 棋子卡片 */
+        .dice {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 6px 12px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .dice:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .dice-val {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f8fafc;
+            width: 24px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* 调节小按钮 */
+        .btn-ctrl {
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-ctrl:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+        }
+        .btn-ctrl:active {
+            transform: scale(0.9);
+        }
+
+        /* 底部功能按键 */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .btn-new {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+        .btn-new:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* 规则说明面板 */
+        .rules-card {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: left;
+            line-height: 1.6;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .rules-card strong {
+            color: #34d399;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+    </div>
+
+    <div class="glass-panel">
+        <h1>意志棋盘</h1>
+        <p class="subtitle">调整棋子位置，达成顶部的目标顺序意志</p>
+        
+        <div class="target-box">
+            <div class="target-title">🎯 目标意志 (从大到小)</div>
+            <div id="target-display">生成中...</div>
+        </div>
+
+        <div class="rules-card">
+            <strong>核心规则：</strong><br>
+            1. 初始 6 行各有唯一一个不重复的棋子（数值为随机的 1-6）。<br>
+            2. 点击 <strong>▲</strong> 往上移一行，数值 <strong>加 1</strong>（数值从 6 再往上循环变回 1）。<br>
+            3. 点击 <strong>▼</strong> 往下移一行，数值 <strong>减 1</strong>（数值从 1 再往下循环变回 6）。<br>
+            4. 目标意志是由后台模拟不重合挪动后产生的<b>从大到小排列数值</b>。使每行最终有且仅有 1 个棋子，且其数值从大到小排列后与“目标意志”完全一致即算通关！
+        </div>
+    </div>
+
+    <div id="game-board" class="board-container"></div>
+
+    <div class="action-buttons">
+        <button class="btn-action btn-reset" onclick="resetLevel()">重置本关</button>
+        <button class="btn-action btn-new" onclick="initLevel()">换一关</button>
+    </div>
+
+    <script>
+        let rows = [[], [], [], [], [], []]; 
+        let initialRows = []; 
+        let targetVals = [];
+
+        function initLevel() {
+            // 1. 系统首先自动生成 1 到 6 的不重复随机数
+            let base = [1, 2, 3, 4, 5, 6].sort(() => Math.random() - 0.5);
+            
+            // 2. 分别布置在六行（每行初始只有唯一一个数字）
+            rows = [[], [], [], [], [], []];
+            base.forEach((v, idx) => {
+                rows[idx].push({ val: v });
+            });
+            
+            // 备份当前关卡的初始排列，供重置功能使用
+            initialRows = JSON.parse(JSON.stringify(rows));
+
+            // 3. 后台进行多步骤完全不重合的模拟移动，用于产生目标序列
+            // 随机生成去向行，并强制所有棋子必须产生行位移（错排算法思想），增加后台挪动强度
+            let destIndices = [0, 1, 2, 3, 4, 5];
+            do {
+                destIndices.sort(() => Math.random() - 0.5);
+            } while (destIndices.some((v, i) => v === i));
+            
+            let shuffledVals = [];
+
+            for (let i = 0; i < 6; i++) {
+                let v_i = base[i];         // 初始第 i 行对应的数值 (i 为 0-5)
+                let j = destIndices[i];    // 挪动到目标行 j (j 为 0-5)
+                
+                // 向上移 (j < i) 移动距离为 i - j，数值增加 i - j
+                // 向下移 (j > i) 移动距离为 j - i，数值减少 j - i
+                // 统一模 6 计算公式：
+                let newVal = ((v_i - 1 + (i - j)) % 6 + 6) % 6 + 1;
+                shuffledVals.push(newVal);
+            }
+
+            // 4. 将这 6 个后台多步挪动完的数字，从大到小排列呈现到公屏上
+            targetVals = [...shuffledVals].sort((a, b) => b - a);
+            document.getElementById('target-display').innerText = targetVals.join(" - ");
+
+            render();
+        }
+
+        // 重置当前关卡到初始分配状态
+        function resetLevel() {
+            rows = JSON.parse(JSON.stringify(initialRows));
+            render();
+        }
+
+        // 核心移动与逻辑
+        function move(rIdx, dIdx, dir) {
+            let nextR = rIdx + dir;
+            if (nextR >= 0 && nextR < 6) {
+                // 取出被移动的棋子
+                let die = rows[rIdx].splice(dIdx, 1)[0];
+                
+                // 向上挪（dir === -1）加 1，向下挪（dir === 1）减 1
+                if (dir === -1) {
+                    die.val = (die.val % 6) + 1;
+                } else {
+                    die.val = ((die.val - 2 + 6) % 6) + 1;
+                }
+                
+                // 放入新行
+                rows[nextR].push(die);
+                render();
+                checkWin();
+            }
+        }
+
+        // 渲染前台棋盘
+        function render() {
+            const board = document.getElementById('game-board');
+            board.innerHTML = '';
+            rows.forEach((rowDice, rIdx) => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'row';
+                
+                const label = document.createElement('div');
+                label.className = 'row-label';
+                label.innerText = `行 ${rIdx + 1}`;
+                rowEl.appendChild(label);
+
+                const diceContainer = document.createElement('div');
+                diceContainer.className = 'dice-container';
+
+                rowDice.forEach((d, dIdx) => {
+                    const diceEl = document.createElement('div');
+                    diceEl.className = 'dice';
+                    diceEl.innerHTML = `
+                        <span class="dice-val">${d.val}</span>
+                        <div class="controls">
+                            <button class="btn-ctrl" onclick="move(${rIdx}, ${dIdx}, -1)">▲</button>
+                            <button class="btn-ctrl" onclick="move(${rIdx}, ${dIdx}, 1)">▼</button>
+                        </div>
+                    `;
+                    diceContainer.appendChild(diceEl);
+                });
+
+                rowEl.appendChild(diceContainer);
+                board.appendChild(rowEl);
+            });
+        }
+
+        // 通关判定逻辑
+        function checkWin() {
+            // 1. 每行只能是唯一一个数字
+            let isAllSingle = rows.every(r => r.length === 1);
+            if (isAllSingle) {
+                // 2. 将玩家调整出来的这 6 个值从大到小排列
+                let currentVals = rows.map(r => r[0].val).sort((a, b) => b - a);
+                // 3. 逐一比对目标意志
+                let isWin = currentVals.every((v, i) => v === targetVals[i]);
+                if (isWin) {
+                    setTimeout(() => {
+                        alert("🎉 意志达成！恭喜顺利通关！即将进入下一关。");
+                        initLevel();
+                    }, 150);
+                }
+            }
+        }
+
+        // 初始运行
+        initLevel();
+    </script>
+</body>
+</html>
